@@ -1,0 +1,102 @@
+#!/bin/sh
+
+log() {
+    echo "[dhcp] $*" >&2
+}
+
+mask2cidr() {
+    nbits=0
+    for octet in $(echo "$1" | tr '.' ' '); do
+        case "$octet" in
+            255) nbits=$((nbits+8)) ;;
+            254) nbits=$((nbits+7)) ;;
+            252) nbits=$((nbits+6)) ;;
+            248) nbits=$((nbits+5)) ;;
+            240) nbits=$((nbits+4)) ;;
+            224) nbits=$((nbits+3)) ;;
+            192) nbits=$((nbits+2)) ;;
+            128) nbits=$((nbits+1)) ;;
+            0) ;;
+            *)
+                log "Invalid netmask: $1"
+                return 1
+                ;;
+        esac
+    done
+    echo "$nbits"
+}
+
+EVENT="${1:-}"
+
+if [ -z "${interface:-}" ]; then
+    log "Missing interface variable"
+    exit 1
+fi
+
+case "$EVENT" in
+    bound|renew)
+        log "Event: $EVENT on $interface"
+
+        if [ -z "${ip:-}" ]; then
+            log "No IP provided by DHCP"
+            exit 1
+        fi
+
+        ip link set "$interface" up
+        ip addr flush dev "$interface" 2>/dev/null || true
+
+        if [ -n "${subnet:-}" ]; then
+            if echo "$subnet" | grep -q '\.'; then
+                cidr=$(mask2cidr "$subnet")
+            else
+                cidr="$subnet"
+            fi
+        else
+            log "No subnet provided, defaulting to /24"
+            cidr=24
+        fi
+
+        ip addr add "$ip/$cidr" dev "$interface"
+
+        # Routes
+        if [ -n "${router:-}" ]; then
+            ip route del default dev "$interface" 2>/dev/null || true
+
+            for gw in $router; do
+                ip route add default via "$gw" dev "$interface" 2>/dev/null || true
+            done
+        else
+            log "No router provided"
+        fi
+
+        # DNS
+        if [ -n "${dns:-}" ]; then
+            tmpfile="/etc/resolv.conf.tmp.$$"
+            : > "$tmpfile"
+
+            for ns in $dns; do
+                echo "nameserver $ns" >> "$tmpfile"
+            done
+
+            mv "$tmpfile" /etc/resolv.conf
+        else
+            log "No DNS servers provided"
+        fi
+
+        log "Configured: $interface -> $ip/$cidr"
+        ;;
+
+    deconfig)
+        log "Deconfiguring $interface"
+
+        ip addr flush dev "$interface" 2>/dev/null || true
+        ip route del default dev "$interface" 2>/dev/null || true
+        ip link set "$interface" up
+        ;;
+    
+    *)
+        log "Unknown event: $EVENT"
+        ;;
+esac
+
+exit 0

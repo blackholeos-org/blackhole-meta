@@ -1,0 +1,9 @@
+[submodule "src/bh-initramfs"]
+	path = src/bh-initramfs
+    url = ../bh-initramfs
+[submodule "src/bh-horizon"]
+    path = src/bh-horizon
+    url = ../bh-horizon
+[submodule "src/bhpkg"]
+    path = src/bhpkg
+    url = ../bhpkg

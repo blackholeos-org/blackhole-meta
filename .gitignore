@@ -1,0 +1,16 @@
+out/
+build/
+
+src/linux-*/
+src/toybox-*/
+
+*.o
+*.d
+*.a
+*.so
+
+*.swp
+*~
+.DS_Store
+
+*.log
