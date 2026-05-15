@@ -7,3 +7,13 @@
 [submodule "src/bhpkg"]
     path = src/bhpkg
     url = ../bhpkg
+[submodule "src/bh-crond"]
+	path = src/bh-crond
+	url = ../bh-crond
+[submodule "src/bh-builder"]
+	path = src/bh-builder
+	url = ../bh-builder
+    
+[submodule "packages"]
+	path = packages
+	url = ../blackhole-packages
