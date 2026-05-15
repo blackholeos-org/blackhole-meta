@@ -19,16 +19,22 @@ tools:
 	@echo "[*] Using Python for bh-builder, no compilation required."
 
 repo: tools
-	@echo "[*] Building Local Blackhole Repository..."
-	@rm -rf out/repo/sync.db out/repo/sync.db.sig
-	@python3 src/bh-builder/bh_builder.py init
+	@echo "[*] Building Local Blackhole Repositories..."
+	@rm -rf out/repo/*.db out/repo/*.db.sig
 	@for pkg in packages/*/*/*.bh; do \
 		if [ -f "$$pkg" ]; then \
 			REPO=$$(echo "$$pkg" | cut -d'/' -f2); \
 			python3 src/bh-builder/bh_builder.py add "$$REPO" "$$pkg" || exit 1; \
 		fi \
 	done
-	@echo "[+] Repository generation complete."
+	@echo "[*] Signing all repository databases..."
+	@for db in out/repo/*.db; do \
+		if [ -f "$$db" ]; then \
+			REPO_NAME=$$(basename $$db .db); \
+			python3 src/bh-builder/bh_builder.py sign "$$REPO_NAME" || exit 1; \
+		fi \
+	done
+	@echo "[+] Multi-PPA generation complete."
 	@echo "[*] To host it, run: python3 -m http.server 8000 -d out/repo"
 
 run:
