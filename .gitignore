@@ -8,6 +8,7 @@ configs/keys/*.pem
 
 *.o
 *.d
+bhpkg
 *.a
 *.so
 
