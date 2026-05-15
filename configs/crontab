@@ -1,0 +1,4 @@
+# Blackhole OS Default Crontab
+# Format: MIN HOUR DAY MON WDAY USER COMMAND
+# Example:
+# 0 2 * * * root rm -rf /tmp/*

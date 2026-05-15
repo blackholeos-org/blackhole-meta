@@ -1,3 +1,5 @@
 [Service]
-Exec=sh -c "ifconfig lo 127.0.0.1 up && ifconfig eth0 up && dhcp -i eth0 -s /bin/dhcp.script"
-Respawn=false
+Exec=sh -c "while ! ip link set eth0 up 2>/dev/null; do sleep 0.1; done; ip link set lo up && exec udhcpc -S -f -s /bin/dhcp.script -i eth0 >/dev/null 2>&1"
+Respawn=true
+User=root
+Group=root

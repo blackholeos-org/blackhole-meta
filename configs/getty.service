@@ -1,0 +1,5 @@
+[Service]
+Exec=/bin/getty 115200 ttyS0 vt100
+Respawn=true
+User=root
+Group=root

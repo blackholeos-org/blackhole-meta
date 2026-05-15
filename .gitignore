@@ -3,6 +3,8 @@ build/
 
 src/linux-*/
 src/toybox-*/
+src/busybox-*/
+configs/keys/*.pem
 
 *.o
 *.d
@@ -14,3 +16,4 @@ src/toybox-*/
 .DS_Store
 
 *.log
+compile_commands.json

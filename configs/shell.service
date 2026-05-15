@@ -1,3 +1,0 @@
-[Service]
-Exec=sh
-Respawn=true

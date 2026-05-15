@@ -1,7 +1,7 @@
 #!/bin/sh
 
 log() {
-    echo "[dhcp] $*" >&2
+    logger -t dhcp "$*"
 }
 
 mask2cidr() {
@@ -58,18 +58,16 @@ case "$EVENT" in
 
         ip addr add "$ip/$cidr" dev "$interface"
 
-        # Routes
         if [ -n "${router:-}" ]; then
-            ip route del default dev "$interface" 2>/dev/null || true
+            route del default dev "$interface" 2>/dev/null || true
 
             for gw in $router; do
-                ip route add default via "$gw" dev "$interface" 2>/dev/null || true
+                route add default gw "$gw" dev "$interface" 2>/dev/null || true
             done
         else
             log "No router provided"
         fi
 
-        # DNS
         if [ -n "${dns:-}" ]; then
             tmpfile="/etc/resolv.conf.tmp.$$"
             : > "$tmpfile"
@@ -100,3 +98,4 @@ case "$EVENT" in
 esac
 
 exit 0
+
