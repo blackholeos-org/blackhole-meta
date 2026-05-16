@@ -113,7 +113,8 @@ fi
 
 sudo mkdir -p $OUT_DIR/mnt_root/etc/bhpkg
 sudo cp $CONFIG_DIR/bhpkg.conf $OUT_DIR/mnt_root/etc/bhpkg/bhpkg.conf
-sudo cp $CONFIG_DIR/keys/repo-pub.pem $OUT_DIR/mnt_root/etc/bhpkg/repo-pub.pem
+sudo mkdir -p $OUT_DIR/mnt_root/etc/bhpkg/keys
+sudo cp $CONFIG_DIR/keys/repo-pub.pem $OUT_DIR/mnt_root/etc/bhpkg/keys/repo-pub.pem
 
 sudo cp $CONFIG_DIR/dhcp.script $OUT_DIR/mnt_root/bin/dhcp.script
 sudo chmod +x $OUT_DIR/mnt_root/bin/dhcp.script
