@@ -21,18 +21,10 @@ tools:
 repo: tools
 	@echo "[*] Building Local Blackhole Repositories..."
 	@rm -rf out/repo/*.db out/repo/*.db.sig
-	@for pkg in packages/*/*/*.bh; do \
-		if [ -f "$$pkg" ]; then \
-			REPO=$$(echo "$$pkg" | cut -d'/' -f2); \
-			python3 src/bh-builder/bh_builder.py add "$$REPO" "$$pkg" || exit 1; \
-		fi \
-	done
-	@echo "[*] Signing all repository databases..."
-	@for db in out/repo/*.db; do \
-		if [ -f "$$db" ]; then \
-			REPO_NAME=$$(basename $$db .db); \
-			python3 src/bh-builder/bh_builder.py sign "$$REPO_NAME" || exit 1; \
-		fi \
+	@for REPO in $(shell ls packages/); do \
+		echo "    -> Processing $$REPO repository..."; \
+		python3 src/bh-builder/bh_builder.py add "$$REPO" packages/$$REPO/*/*.bh || exit 1; \
+		python3 src/bh-builder/bh_builder.py sign "$$REPO" || exit 1; \
 	done
 	@echo "[+] Multi-PPA generation complete."
 	@echo "[*] To host it, run: python3 -m http.server 8000 -d out/repo"
