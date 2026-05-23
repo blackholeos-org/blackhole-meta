@@ -1,19 +1,19 @@
 [submodule "src/bh-initramfs"]
 	path = src/bh-initramfs
-    url = ../bh-initramfs
+    url = https://github.com/blackholeos-org/bh-initramfs.git
 [submodule "src/bh-horizon"]
     path = src/bh-horizon
-    url = ../bh-horizon
+    url = https://github.com/blackholeos-org/bh-horizon.git
 [submodule "src/bhpkg"]
     path = src/bhpkg
-    url = ../bhpkg
+    url = https://github.com/blackholeos-org/bhpkg.git
 [submodule "src/bh-crond"]
 	path = src/bh-crond
-	url = ../bh-crond
+	url = https://github.com/blackholeos-org/bh-crond.git
 [submodule "src/bh-builder"]
 	path = src/bh-builder
-	url = ../bh-builder
+	url = https://github.com/blackholeos-org/bh-builder.git
     
 [submodule "packages"]
 	path = packages
-	url = ../blackhole-packages
+	url = https://github.com/blackholeos-org/packages.git
