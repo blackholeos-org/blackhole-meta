@@ -89,7 +89,20 @@ echo "tty:x:5:" | sudo tee -a $OUT_DIR/mnt_root/etc/group >/dev/null
 echo "nobody:x:65534:" | sudo tee -a $OUT_DIR/mnt_root/etc/group >/dev/null
 echo "/bin/sh" | sudo tee $OUT_DIR/mnt_root/etc/shells >/dev/null
 
-HASH=$(openssl passwd -6 "root")
+echo "[*] Setting Security Root Password..."
+if [ -z "$ROOT_PASS" ]; then
+    ROOT_PASS=$(openssl rand -base64 16)
+    echo ""
+    echo "=================================================================="
+    echo " [!] WARNING:"
+    echo "     No ROOT_PASS specified. A secure random password was generated:"
+    echo "     -->  $ROOT_PASS  <--"
+    echo "     Please save this immediately. You will need it to login."
+    echo "=================================================================="
+    echo ""
+fi
+
+HASH=$(openssl passwd -6 "$ROOT_PASS")
 echo "root:${HASH}:19000:0:99999:7:::" | sudo tee $OUT_DIR/mnt_root/etc/shadow >/dev/null
 echo "nobody:*:19000:0:99999:7:::" | sudo tee -a $OUT_DIR/mnt_root/etc/shadow >/dev/null
 sudo chmod 600 $OUT_DIR/mnt_root/etc/shadow
@@ -112,7 +125,7 @@ if [ -f "$SRC_DIR/bhpkg/bhpkg" ]; then
 fi
 
 sudo mkdir -p $OUT_DIR/mnt_root/etc/bhpkg
-sudo cp $CONFIG_DIR/bhpkg.conf $OUT_DIR/mnt_root/etc/bhpkg/bhpkg.conf
+sudo cp $CONFIG_DIR/bhpkg.conf $OUT_DIR/mnt_root/etc/bhpkg/bhpkg.toml
 sudo mkdir -p $OUT_DIR/mnt_root/etc/bhpkg/keys
 sudo cp $CONFIG_DIR/keys/repo-pub.pem $OUT_DIR/mnt_root/etc/bhpkg/keys/repo-pub.pem
 

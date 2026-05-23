@@ -17,6 +17,15 @@ cd $KERNEL_SRC
 cp $CONFIG_DIR/kernel.config .config
 ./scripts/config --set-str INITRAMFS_SOURCE "$OUT_DIR/rootfs.cpio.gz"
 
+./scripts/config --enable CONFIG_NAMESPACES
+./scripts/config --enable CONFIG_USER_NS
+./scripts/config --enable CONFIG_UTS_NS
+./scripts/config --enable CONFIG_IPC_NS
+./scripts/config --enable CONFIG_PID_NS
+./scripts/config --enable CONFIG_NET_NS
+./scripts/config --enable CONFIG_SECCOMP
+./scripts/config --enable CONFIG_SECCOMP_FILTER
+
 ./scripts/config --enable CONFIG_NETDEVICES
 ./scripts/config --enable CONFIG_ETHERNET
 ./scripts/config --enable CONFIG_NET_VENDOR_INTEL

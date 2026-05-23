@@ -70,10 +70,6 @@ cp horizon $OUT_DIR/horizon
 
 echo "    -> Compiling Blackhole Package Manager (bhpkg)..."
 cd $SRC_DIR/bhpkg
-if [ ! -d "sysroot/lib" ]; then
-    echo "       [*] Bootstrapping bhpkg sysroot (This will take a few minutes)..."
-    python3 build_sysroot.py
-fi
 make > /dev/null
 
 echo "    -> Compiling Cron Daemon (bh-crond)..."
