@@ -1,0 +1,25 @@
+[options]
+verbosity = 3
+pacman_mode = true
+use_flags = ["debug", "test", "dbus", "-x11", "-wayland", "-lto"]
+
+[[repos]]
+name = "core"
+url = "http://10.0.2.2:8000/core.db"
+sig_url = "http://10.0.2.2:8000/core.db.sig"
+pubkey_path = "/etc/bhpkg/keys/repo-pub.pem"
+priority = 1
+
+[[repos]]
+name = "community"
+url = "http://10.0.2.2:8000/community.db"
+sig_url = "http://10.0.2.2:8000/community.db.sig"
+pubkey_path = "/etc/bhpkg/keys/repo-pub.pem"
+priority = 2
+
+[[repos]]
+name = "testing"
+url = "http://10.0.2.2:8000/testing.db"
+sig_url = "http://10.0.2.2:8000/testing.db.sig"
+pubkey_path = "/etc/bhpkg/keys/repo-pub.pem"
+priority = 0

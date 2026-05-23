@@ -125,7 +125,7 @@ if [ -f "$SRC_DIR/bhpkg/bhpkg" ]; then
 fi
 
 sudo mkdir -p $OUT_DIR/mnt_root/etc/bhpkg
-sudo cp $CONFIG_DIR/bhpkg.conf $OUT_DIR/mnt_root/etc/bhpkg/bhpkg.toml
+sudo cp $CONFIG_DIR/bhpkg.toml $OUT_DIR/mnt_root/etc/bhpkg/bhpkg.toml
 sudo mkdir -p $OUT_DIR/mnt_root/etc/bhpkg/keys
 sudo cp $CONFIG_DIR/keys/repo-pub.pem $OUT_DIR/mnt_root/etc/bhpkg/keys/repo-pub.pem
 
