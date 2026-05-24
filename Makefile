@@ -20,6 +20,11 @@ tools:
 
 repo: tools
 	@echo "[*] Building Local Blackhole Repositories..."
+	@mkdir -p out/repo
+	
+	@echo "    -> Staging local package assets..."
+	@cp configs/kernel.config out/repo/kernel.config
+	
 	@rm -rf out/repo/*.db out/repo/*.db.sig
 	@for REPO in $(shell ls packages/); do \
 		echo "    -> Processing $$REPO repository..."; \
@@ -32,8 +37,8 @@ repo: tools
 run:
 	@echo "[*] Booting Blackhole OS in QEMU..."
 	qemu-system-x86_64 \
-		-cpu host \
-		-M q35 -enable-kvm -m 1024 \
+		-cpu host -smp $(shell nproc) \
+		-M q35 -enable-kvm -m 8192 \
 		-drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd \
 		-drive file=out/blackhole-uefi.img,format=raw \
 		-nographic
